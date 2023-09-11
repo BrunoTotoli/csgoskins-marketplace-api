@@ -1,21 +1,17 @@
-package com.bruno.clutchskins.entities;
+package com.bruno.clutchskins.requests;
 
 import com.bruno.clutchskins.entities.enums.Exterior;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
-@Entity
-@Table(name = "tb_skin")
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
-public class Skin {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+@Builder
+public class SkinResponse {
+
     private Long id;
     private String name;
     private String description;
@@ -23,10 +19,7 @@ public class Skin {
     private BigDecimal price;
     private Boolean souvenir;
     private Boolean stattrak;
-    @ManyToOne
-    @JoinColumn(name = "weapon_id")
-    private Weapon weaponName;
-    @Enumerated(EnumType.STRING)
     private Exterior exterior;
+    private String weapon;
 
 }
