@@ -27,6 +27,7 @@ public class SkinCommandLineRunner implements CommandLineRunner {
 
         createWeapons();
 
+
     }
 
     private void createWeapons() {
@@ -94,6 +95,27 @@ public class SkinCommandLineRunner implements CommandLineRunner {
                         weaponSaved7, Exterior.FIELDTESTED));
         weaponSaved7.setSkins(List.of(savedSkin7));
         weaponRepository.save(weaponSaved7);
+
+
+        Skin savedSkin8 = skinRepository.save(
+                new Skin(9L, "TUBARAO", "SkinBoat", 0.22F,
+                        new BigDecimal("250.00"), false, false,
+                        weaponSaved7, Exterior.FIELDTESTED));
+        weaponSaved7.setSkins(List.of(savedSkin8));
+        weaponRepository.save(weaponSaved7);
+
+        Skin savedSkin9 = skinRepository.save(
+                new Skin(10L, "TUBARAO", "SkinBoat", 0.22F,
+                        new BigDecimal("250.00"), false, false,
+                        weaponSaved7, Exterior.FIELDTESTED));
+        weaponSaved7.setSkins(List.of(savedSkin9));
+
+        Skin savedSkin10 = skinRepository.save(
+                new Skin(11L, "TUBARAO", "SkinBoat", 0.22F,
+                        new BigDecimal("250.00"), false, false,
+                        weaponSaved7, Exterior.FIELDTESTED));
+
+
 
     }
 

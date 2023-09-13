@@ -17,9 +17,10 @@ public class Weapon {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
     private String name;
     @JsonIgnore
-    @OneToMany(mappedBy = "weaponName",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "weaponName", cascade = CascadeType.ALL)
     private List<Skin> skins;
 
 }
