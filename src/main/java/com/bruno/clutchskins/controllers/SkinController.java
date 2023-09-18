@@ -25,7 +25,7 @@ public class SkinController {
     @GetMapping
     public ResponseEntity<Page<SkinResponse>> findSkinsPageable(@RequestParam(defaultValue = "0") int page
             , @RequestParam(defaultValue = "10") int size) {
-        return new ResponseEntity<>(skinService.listAll(page, size), HttpStatus.OK);
+        return new ResponseEntity<>(skinService.findAllSkinsPageable(page, size), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -50,8 +50,13 @@ public class SkinController {
     }
 
     @GetMapping("/weapon")
-    public ResponseEntity<List<Skin>> findSkinsByWeapon(@RequestParam String weaponName) {
-        return new ResponseEntity<>(skinService.findSkinListByWeaponName(weaponName), HttpStatus.OK);
+    public ResponseEntity<List<SkinResponse>> findSkinsByWeapon(@RequestParam String weaponName) {
+        return new ResponseEntity<>(skinService.findSkinListByWeaponName(weaponName.toUpperCase()), HttpStatus.OK);
+    }
+
+    @GetMapping("/category")
+    public ResponseEntity<List<SkinResponse>> findSkinsByCategory(@RequestParam String category) {
+        return new ResponseEntity<>(skinService.findSkinListByCategory(category.toUpperCase()), HttpStatus.OK);
     }
 
 }

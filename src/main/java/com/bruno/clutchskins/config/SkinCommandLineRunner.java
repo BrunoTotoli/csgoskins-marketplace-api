@@ -1,8 +1,10 @@
 package com.bruno.clutchskins.config;
 
+import com.bruno.clutchskins.entities.Category;
 import com.bruno.clutchskins.entities.Skin;
 import com.bruno.clutchskins.entities.Weapon;
 import com.bruno.clutchskins.entities.enums.Exterior;
+import com.bruno.clutchskins.repositories.CategoryRepository;
 import com.bruno.clutchskins.repositories.SkinRepository;
 import com.bruno.clutchskins.repositories.WeaponRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,9 @@ public class SkinCommandLineRunner implements CommandLineRunner {
     @Autowired
     WeaponRepository weaponRepository;
 
+    @Autowired
+    CategoryRepository categoryRepository;
+
     @Override
     public void run(String... args) throws Exception {
 
@@ -31,11 +36,22 @@ public class SkinCommandLineRunner implements CommandLineRunner {
     }
 
     private void createWeapons() {
-        Weapon weaponSaved = weaponRepository.save(new Weapon(1L, "Ak-47", null));
+
+        Category category = new Category(null, "Rifles", null);
+        Category category2 = new Category(null, "Pistols", null);
+        Category category3 = new Category(null, "Knifes", null);
+
+        categoryRepository.save(category);
+        categoryRepository.save(category2);
+        categoryRepository.save(category3);
+
+
+        Weapon weaponSaved = weaponRepository.save(new Weapon(1L, "AK-47", null));
         Skin savedSkin = skinRepository.save(
                 new Skin(1L, "ASIMOV", "SkinBoat", 0.22F,
                         new BigDecimal("250.00"), false, false,
-                        weaponSaved, Exterior.FIELDTESTED));
+                        weaponSaved, Exterior.FIELDTESTED, category));
+
         weaponSaved.setSkins(Arrays.asList(savedSkin));
         weaponRepository.save(weaponSaved);
 
@@ -43,7 +59,7 @@ public class SkinCommandLineRunner implements CommandLineRunner {
         Skin savedSkin1 = skinRepository.save(
                 new Skin(2L, "BLUEPRINT", "SkinBoat", 0.11F,
                         new BigDecimal("400.00"), false, false,
-                        weaponSaved, Exterior.MINIMALWEAR));
+                        weaponSaved, Exterior.MINIMALWEAR, category2));
         weaponSaved.setSkins(Arrays.asList(savedSkin1));
         weaponRepository.save(weaponSaved1);
 
@@ -52,7 +68,7 @@ public class SkinCommandLineRunner implements CommandLineRunner {
         Skin savedSkin2 = skinRepository.save(
                 new Skin(3L, "FUINHA", "SkinBoat", 0.31F,
                         new BigDecimal("11.00"), false, false,
-                        weaponSaved2, Exterior.FIELDTESTED));
+                        weaponSaved2, Exterior.FIELDTESTED, category2));
         weaponSaved2.setSkins(List.of(savedSkin2));
         weaponRepository.save(weaponSaved2);
 
@@ -60,7 +76,7 @@ public class SkinCommandLineRunner implements CommandLineRunner {
         Skin savedSkin3 = skinRepository.save(
                 new Skin(4L, "HOWL", "SkinBoat", 0.05F,
                         new BigDecimal("25000.00"), false, false,
-                        weaponSaved3, Exterior.FACTORYNEW));
+                        weaponSaved3, Exterior.FACTORYNEW, category));
         weaponSaved3.setSkins(List.of(savedSkin3));
         weaponRepository.save(weaponSaved3);
 
@@ -68,7 +84,7 @@ public class SkinCommandLineRunner implements CommandLineRunner {
         Skin savedSkin4 = skinRepository.save(
                 new Skin(5L, "DRAGON_LORE", "SkinBoat", 0.22F,
                         new BigDecimal("30000.00"), false, false,
-                        weaponSaved4, Exterior.FIELDTESTED));
+                        weaponSaved4, Exterior.FIELDTESTED, category));
         weaponSaved4.setSkins(List.of(savedSkin4));
         weaponRepository.save(weaponSaved4);
 
@@ -76,7 +92,7 @@ public class SkinCommandLineRunner implements CommandLineRunner {
         Skin savedSkin5 = skinRepository.save(
                 new Skin(6L, "BLAZE", "SkinBoat", 0.22F,
                         new BigDecimal("1500.00"), false, false,
-                        weaponSaved5, Exterior.FIELDTESTED));
+                        weaponSaved5, Exterior.FIELDTESTED, category2));
         weaponSaved5.setSkins(List.of(savedSkin5));
         weaponRepository.save(weaponSaved5);
 
@@ -84,7 +100,7 @@ public class SkinCommandLineRunner implements CommandLineRunner {
         Skin savedSkin6 = skinRepository.save(
                 new Skin(7L, "SCAUT", "SkinBoat", 0.22F,
                         new BigDecimal("250.00"), false, false,
-                        weaponSaved6, Exterior.FIELDTESTED));
+                        weaponSaved6, Exterior.FIELDTESTED, category));
         weaponSaved6.setSkins(List.of(savedSkin6));
         weaponRepository.save(weaponSaved6);
 
@@ -92,7 +108,7 @@ public class SkinCommandLineRunner implements CommandLineRunner {
         Skin savedSkin7 = skinRepository.save(
                 new Skin(8L, "TUBARAO", "SkinBoat", 0.22F,
                         new BigDecimal("250.00"), false, false,
-                        weaponSaved7, Exterior.FIELDTESTED));
+                        weaponSaved7, Exterior.FIELDTESTED, category2));
         weaponSaved7.setSkins(List.of(savedSkin7));
         weaponRepository.save(weaponSaved7);
 
@@ -100,22 +116,15 @@ public class SkinCommandLineRunner implements CommandLineRunner {
         Skin savedSkin8 = skinRepository.save(
                 new Skin(9L, "TUBARAO", "SkinBoat", 0.22F,
                         new BigDecimal("250.00"), false, false,
-                        weaponSaved7, Exterior.FIELDTESTED));
+                        weaponSaved7, Exterior.FIELDTESTED, category2));
         weaponSaved7.setSkins(List.of(savedSkin8));
         weaponRepository.save(weaponSaved7);
 
         Skin savedSkin9 = skinRepository.save(
                 new Skin(10L, "TUBARAO", "SkinBoat", 0.22F,
                         new BigDecimal("250.00"), false, false,
-                        weaponSaved7, Exterior.FIELDTESTED));
+                        weaponSaved7, Exterior.FIELDTESTED, category3));
         weaponSaved7.setSkins(List.of(savedSkin9));
-
-        Skin savedSkin10 = skinRepository.save(
-                new Skin(11L, "TUBARAO", "SkinBoat", 0.22F,
-                        new BigDecimal("250.00"), false, false,
-                        weaponSaved7, Exterior.FIELDTESTED));
-
-
 
     }
 

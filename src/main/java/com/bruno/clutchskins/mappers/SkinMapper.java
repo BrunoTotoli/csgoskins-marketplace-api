@@ -14,7 +14,7 @@ import java.util.List;
 @Mapper
 public interface SkinMapper {
 
-    SkinMapper INSTANCE = Mappers.getMapper(SkinMapper.class);
+    SkinMapper SKINMAPPER = Mappers.getMapper(SkinMapper.class);
 
     Skin toSkin(SkinPostRequestBody skinPostRequestBody);
 

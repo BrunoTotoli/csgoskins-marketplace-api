@@ -1,7 +1,7 @@
 package com.bruno.clutchskins.services;
 
 import com.bruno.clutchskins.entities.Skin;
-import com.bruno.clutchskins.mappers.SkinMapper;
+import com.bruno.clutchskins.repositories.CategoryRepository;
 import com.bruno.clutchskins.repositories.SkinRepository;
 import com.bruno.clutchskins.repositories.WeaponRepository;
 import com.bruno.clutchskins.requests.SkinPostRequestBody;
@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.bruno.clutchskins.mappers.SkinMapper.SKINMAPPER;
 import static com.bruno.clutchskins.utils.PageUtils.createPageFromList;
 import static com.bruno.clutchskins.utils.PageUtils.createPageRequestUsing;
 
@@ -25,32 +26,36 @@ public class SkinService {
 
     private final SkinRepository skinRepository;
     private final WeaponRepository weaponRepository;
+    private final CategoryRepository categoryRepository;
 
 
-    public Page<SkinResponse> listAll(int page, int size) {
+    public Page<SkinResponse> findAllSkinsPageable(int page, int size) {
         Pageable pageRequestUsing = createPageRequestUsing(page, size);
-        return createPageFromList(SkinMapper.INSTANCE.mapList(skinRepository.findAll()), pageRequestUsing);
+        return createPageFromList(SKINMAPPER.mapList(skinRepository.findAll()), pageRequestUsing);
     }
 
     public SkinResponse findById(Long id) {
-        return SkinMapper.INSTANCE.mapSkinDto(skinRepository.findById(id)
+        return SKINMAPPER.mapSkinDto(skinRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Invalid id")));
     }
 
     public Skin save(SkinPostRequestBody skinPostRequestBody) {
-        return skinRepository.save(SkinMapper.INSTANCE.toSkin(skinPostRequestBody));
+        return skinRepository.save(SKINMAPPER.toSkin(skinPostRequestBody));
     }
 
     public Skin replace(SkinPutRequestBody skinPutRequestBody) {
-        return skinRepository.save(SkinMapper.INSTANCE.toSkin(skinPutRequestBody));
+        return skinRepository.save(SKINMAPPER.toSkin(skinPutRequestBody));
     }
 
     public void delete(Long id) {
         skinRepository.deleteById(id);
     }
 
-    public List<Skin> findSkinListByWeaponName(String weaponName) {
-        return weaponRepository.findWeaponByName(weaponName).getSkins();
+    public List<SkinResponse> findSkinListByWeaponName(String weaponName) {
+        return SKINMAPPER.mapList(weaponRepository.findWeaponByName(weaponName).getSkins());
     }
 
+    public List<SkinResponse> findSkinListByCategory(String category) {
+        return SKINMAPPER.mapList(categoryRepository.findCategoryByName(category).getSkinList());
+    }
 }

@@ -29,5 +29,8 @@ public class Skin {
     private Weapon weaponName;
     @Enumerated(EnumType.STRING)
     private Exterior exterior;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 
 }
