@@ -5,6 +5,7 @@ import com.bruno.clutchskins.requests.SkinPostRequestBody;
 import com.bruno.clutchskins.requests.SkinPutRequestBody;
 import com.bruno.clutchskins.requests.SkinResponse;
 import com.bruno.clutchskins.services.SkinService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -34,12 +35,12 @@ public class SkinController {
     }
 
     @PostMapping
-    public ResponseEntity<Skin> save(@RequestBody SkinPostRequestBody skinPostRequestBody) {
+    public ResponseEntity<Skin> save(@Valid @RequestBody SkinPostRequestBody skinPostRequestBody) {
         return new ResponseEntity<>(skinService.save(skinPostRequestBody), HttpStatus.CREATED);
     }
 
     @PutMapping
-    public ResponseEntity<Skin> replace(@RequestBody SkinPutRequestBody skinPutRequestBody) {
+    public ResponseEntity<Skin> replace(@Valid @RequestBody SkinPutRequestBody skinPutRequestBody) {
         return new ResponseEntity<>(skinService.replace(skinPutRequestBody), HttpStatus.OK);
     }
 

@@ -1,6 +1,8 @@
 package com.bruno.clutchskins.services;
 
 import com.bruno.clutchskins.entities.Skin;
+import com.bruno.clutchskins.exceptions.EntityNotFoundException;
+import com.bruno.clutchskins.exceptions.InvalidFloatException;
 import com.bruno.clutchskins.repositories.CategoryRepository;
 import com.bruno.clutchskins.repositories.SkinRepository;
 import com.bruno.clutchskins.repositories.WeaponRepository;
@@ -11,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,14 +39,20 @@ public class SkinService {
 
     public SkinResponse findById(Long id) {
         return SKINMAPPER.mapSkinDto(skinRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Invalid id")));
+                .orElseThrow(() -> new EntityNotFoundException("Invalid id :" + id)));
     }
 
     public Skin save(SkinPostRequestBody skinPostRequestBody) {
+        if (skinPostRequestBody.getSkinFloat() < skinPostRequestBody.getExterior().getMinFloat()
+                || skinPostRequestBody.getSkinFloat() > skinPostRequestBody.getExterior().getMaxFloat())
+            throw new InvalidFloatException("The float is not valid with exterior");
         return skinRepository.save(SKINMAPPER.toSkin(skinPostRequestBody));
     }
 
     public Skin replace(SkinPutRequestBody skinPutRequestBody) {
+        if (skinPutRequestBody.getSkinFloat() < skinPutRequestBody.getExterior().getMinFloat()
+                || skinPutRequestBody.getSkinFloat() > skinPutRequestBody.getExterior().getMaxFloat())
+            throw new InvalidFloatException("The float is not valid with exterior");
         return skinRepository.save(SKINMAPPER.toSkin(skinPutRequestBody));
     }
 
