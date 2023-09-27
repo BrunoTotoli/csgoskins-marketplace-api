@@ -1,7 +1,10 @@
 package com.bruno.clutchskins.services;
 
+import com.bruno.clutchskins.entities.Category;
 import com.bruno.clutchskins.entities.Skin;
+import com.bruno.clutchskins.entities.Weapon;
 import com.bruno.clutchskins.entities.enums.Exterior;
+import com.bruno.clutchskins.exceptions.BadRequestException;
 import com.bruno.clutchskins.exceptions.EntityNotFoundException;
 import com.bruno.clutchskins.exceptions.InvalidFloatException;
 import com.bruno.clutchskins.repositories.CategoryRepository;
@@ -14,10 +17,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.bruno.clutchskins.mappers.SkinMapper.SKINMAPPER;
 import static com.bruno.clutchskins.utils.PageUtils.createPageFromList;
@@ -48,8 +52,8 @@ public class SkinService {
                 || skinPostRequestBody.getSkinFloat() > skinPostRequestBody.getExterior().getMaxFloat()) {
             Exterior exterior = skinPostRequestBody.getExterior();
             throw new InvalidFloatException("The float is not valid with exterior. " + exterior +
-                    " minFloat: " + exterior.getMinFloat() + " maxFloat: " + exterior.getMaxFloat()+
-                    " currentFloat: " +skinPostRequestBody.getSkinFloat());
+                    " minFloat: " + exterior.getMinFloat() + " maxFloat: " + exterior.getMaxFloat() +
+                    " currentFloat: " + skinPostRequestBody.getSkinFloat());
         }
         return skinRepository.save(SKINMAPPER.toSkin(skinPostRequestBody));
     }
@@ -70,6 +74,12 @@ public class SkinService {
     }
 
     public List<SkinResponse> findSkinListByCategory(String category) {
-        return SKINMAPPER.mapList(categoryRepository.findCategoryByName(category).getSkinList());
+        return SKINMAPPER.mapList(categoryRepository.findCategoryByName(category)
+                .orElseThrow(() -> new EntityNotFoundException("Invalid name"))
+                .getWeaponList()
+                .stream()
+                .map(Weapon::getSkins)
+                .flatMap(List::stream)
+                .toList());
     }
 }

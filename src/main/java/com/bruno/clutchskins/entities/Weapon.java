@@ -22,5 +22,7 @@ public class Weapon {
     @JsonIgnore
     @OneToMany(mappedBy = "weaponName", cascade = CascadeType.ALL)
     private List<Skin> skins;
+    @ManyToOne
+    private Category category;
 
 }

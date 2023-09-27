@@ -21,6 +21,6 @@ public class Category {
     private String name;
     @JsonIgnore
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    private List<Skin> skinList;
+    private List<Weapon> weaponList;
 
 }
