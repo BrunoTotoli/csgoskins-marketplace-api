@@ -1,6 +1,7 @@
 package com.bruno.clutchskins.services;
 
 import com.bruno.clutchskins.entities.Skin;
+import com.bruno.clutchskins.entities.enums.Exterior;
 import com.bruno.clutchskins.exceptions.EntityNotFoundException;
 import com.bruno.clutchskins.exceptions.InvalidFloatException;
 import com.bruno.clutchskins.repositories.CategoryRepository;
@@ -44,8 +45,12 @@ public class SkinService {
 
     public Skin save(SkinPostRequestBody skinPostRequestBody) {
         if (skinPostRequestBody.getSkinFloat() < skinPostRequestBody.getExterior().getMinFloat()
-                || skinPostRequestBody.getSkinFloat() > skinPostRequestBody.getExterior().getMaxFloat())
-            throw new InvalidFloatException("The float is not valid with exterior");
+                || skinPostRequestBody.getSkinFloat() > skinPostRequestBody.getExterior().getMaxFloat()) {
+            Exterior exterior = skinPostRequestBody.getExterior();
+            throw new InvalidFloatException("The float is not valid with exterior. " + exterior +
+                    " minFloat: " + exterior.getMinFloat() + " maxFloat: " + exterior.getMaxFloat()+
+                    " currentFloat: " +skinPostRequestBody.getSkinFloat());
+        }
         return skinRepository.save(SKINMAPPER.toSkin(skinPostRequestBody));
     }
 

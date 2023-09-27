@@ -49,7 +49,7 @@ public class GlobalControllerExceptionHandler {
                         .title("Float invalid")
                         .errorMessage(invalidFloatException.getMessage())
                         .errorClass(invalidFloatException.getClass().getName())
-                        .build(), HttpStatus.NOT_FOUND
+                        .build(), HttpStatus.BAD_REQUEST
         );
     }
 
