@@ -1,10 +1,10 @@
 INSERT INTO tb_category (name) VALUES ('RIFLES');
-INSERT INTO tb_category (name) VALUES ('PISTOLS');
-INSERT INTO tb_category (name) VALUES ('KNIFES');
-INSERT INTO tb_category (name) VALUES ('GLOVES');
-INSERT INTO tb_category (name) VALUES ('SNIPER_RIFLES');
-INSERT INTO tb_category (name) VALUES ('SMGS');
-INSERT INTO tb_category (name) VALUES ('SHOTGUNS');
+INSERT INTO tb_category (name) VALUES ('PISTOLAS');
+INSERT INTO tb_category (name) VALUES ('FACAS');
+INSERT INTO tb_category (name) VALUES ('LUVAS');
+INSERT INTO tb_category (name) VALUES ('SNIPERS');
+INSERT INTO tb_category (name) VALUES ('SUBMETRALHADORAS');
+INSERT INTO tb_category (name) VALUES ('ESCOPETAS');
 
 
 INSERT INTO tb_weapon (category_id,name) VALUES (1,'AK-47');

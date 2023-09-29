@@ -22,4 +22,6 @@ public enum Exterior {
     public float getMaxFloat() {
         return maxFloat;
     }
+
+
 }

@@ -3,7 +3,6 @@ package com.bruno.clutchskins.handler;
 import com.bruno.clutchskins.exceptions.BadRequestException;
 import com.bruno.clutchskins.exceptions.EntityNotFoundException;
 import com.bruno.clutchskins.exceptions.ExceptionDetails;
-import com.bruno.clutchskins.exceptions.InvalidFloatException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -39,18 +38,4 @@ public class GlobalControllerExceptionHandler {
                         .build(), HttpStatus.NOT_FOUND
         );
     }
-
-    @ExceptionHandler(InvalidFloatException.class)
-    public ResponseEntity<ExceptionDetails> handlerInvalidFloatException(InvalidFloatException invalidFloatException) {
-        return new ResponseEntity<>(
-                ExceptionDetails.builder()
-                        .timestamp(LocalDateTime.now())
-                        .status(HttpStatus.BAD_REQUEST.value())
-                        .title("Float invalid")
-                        .errorMessage(invalidFloatException.getMessage())
-                        .errorClass(invalidFloatException.getClass().getName())
-                        .build(), HttpStatus.BAD_REQUEST
-        );
-    }
-
 }

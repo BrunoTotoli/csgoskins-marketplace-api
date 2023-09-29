@@ -1,27 +1,24 @@
 package com.bruno.clutchskins.services;
 
-import com.bruno.clutchskins.entities.Category;
 import com.bruno.clutchskins.entities.Skin;
 import com.bruno.clutchskins.entities.Weapon;
 import com.bruno.clutchskins.entities.enums.Exterior;
-import com.bruno.clutchskins.exceptions.BadRequestException;
 import com.bruno.clutchskins.exceptions.EntityNotFoundException;
-import com.bruno.clutchskins.exceptions.InvalidFloatException;
 import com.bruno.clutchskins.repositories.CategoryRepository;
 import com.bruno.clutchskins.repositories.SkinRepository;
 import com.bruno.clutchskins.repositories.WeaponRepository;
 import com.bruno.clutchskins.requests.SkinPostRequestBody;
 import com.bruno.clutchskins.requests.SkinPutRequestBody;
 import com.bruno.clutchskins.requests.SkinResponse;
+import com.bruno.clutchskins.utils.ExteriorUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static com.bruno.clutchskins.mappers.SkinMapper.SKINMAPPER;
 import static com.bruno.clutchskins.utils.PageUtils.createPageFromList;
@@ -48,20 +45,21 @@ public class SkinService {
     }
 
     public Skin save(SkinPostRequestBody skinPostRequestBody) {
-        if (skinPostRequestBody.getSkinFloat() < skinPostRequestBody.getExterior().getMinFloat()
-                || skinPostRequestBody.getSkinFloat() > skinPostRequestBody.getExterior().getMaxFloat()) {
-            Exterior exterior = skinPostRequestBody.getExterior();
-            throw new InvalidFloatException("The float is not valid with exterior. " + exterior +
-                    " minFloat: " + exterior.getMinFloat() + " maxFloat: " + exterior.getMaxFloat() +
-                    " currentFloat: " + skinPostRequestBody.getSkinFloat());
-        }
-        return skinRepository.save(SKINMAPPER.toSkin(skinPostRequestBody));
+        String name = skinPostRequestBody.getName();
+        String[] splitName = name.split("\\|");
+
+        Skin skin = SKINMAPPER.toSkin(skinPostRequestBody);
+        Weapon weapon = weaponRepository.findWeaponByName(StringUtils.deleteWhitespace(splitName[0]));
+
+        skin.setWeaponName(weapon);
+        skin.setCategory(weapon.getCategory());
+
+        Exterior exterior = ExteriorUtils.createExteriorBySkinFloat(skinPostRequestBody.getSkinFloat());
+        skin.setExterior(exterior);
+        return skinRepository.save(skin);
     }
 
     public Skin replace(SkinPutRequestBody skinPutRequestBody) {
-        if (skinPutRequestBody.getSkinFloat() < skinPutRequestBody.getExterior().getMinFloat()
-                || skinPutRequestBody.getSkinFloat() > skinPutRequestBody.getExterior().getMaxFloat())
-            throw new InvalidFloatException("The float is not valid with exterior");
         return skinRepository.save(SKINMAPPER.toSkin(skinPutRequestBody));
     }
 
