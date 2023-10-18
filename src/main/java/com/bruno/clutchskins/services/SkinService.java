@@ -46,10 +46,24 @@ public class SkinService {
 
     public Skin save(SkinPostRequestBody skinPostRequestBody) {
         String name = skinPostRequestBody.getName();
+
+        if (name.contains("StatTrak™")) {
+            name = name.replace("StatTrak™", "");
+            skinPostRequestBody.setStattrak(true);
+            skinPostRequestBody.setSouvenir(false);
+        }
+        if (name.contains("Souvenir")) {
+            name = name.replace("Souvenir", "");
+            skinPostRequestBody.setStattrak(false);
+            skinPostRequestBody.setSouvenir(true);
+        }
+
         String[] splitName = name.split("\\|");
 
         Skin skin = SKINMAPPER.toSkin(skinPostRequestBody);
-        Weapon weapon = weaponRepository.findWeaponByName(StringUtils.deleteWhitespace(splitName[0]));
+
+        String weaponNameUpperCase = StringUtils.deleteWhitespace(splitName[0].toUpperCase());
+        Weapon weapon = weaponRepository.findWeaponByName(weaponNameUpperCase);
 
         skin.setWeaponName(weapon);
         skin.setCategory(weapon.getCategory());
